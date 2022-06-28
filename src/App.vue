@@ -1,7 +1,25 @@
 <template>
   <div>
     <div v-if="!isFetchingShows">
-      Content
+      <hero-section
+        :image-url="fetchFeaturedImage(featuredTvShow)"
+        :tv-show="featuredTvShow"
+      />
+      <main class="mx-10 pt-10">
+        <vue-horizontal
+          class="vue-horizontal"
+          snap="start"
+        >
+          <featured-card
+            v-for="popularTvShow in _.take(popularTvShows, 20)"
+            :key="popularTvShow.id"
+            :class="{ '-mt-2': featuredTvShow.id === popularTvShow.id}"
+            :tv-show="popularTvShow"
+            class="transition-all cursor-pointer"
+            @mouseover="featuredTvShow = popularTvShow"
+          />
+        </vue-horizontal>
+      </main>
     </div>
     <p v-else>
       Loading...
@@ -9,14 +27,21 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { computed, onMounted, ref } from 'vue'
 import _ from 'lodash'
+import VueHorizontal from 'vue-horizontal'
+
 import tvShowsMockData from '../mocks/tvshows.json'
+import HeroSection from '@/components/HeroSection.vue'
+import FeaturedCard from '@/components/FeaturedCard.vue'
 
 const tvShows = ref(null)
 const loadMockData = ref(true)
 const isFetchingShows = ref(true)
+const featuredTvShow = ref(null)
+const featuredTvShowsImages = ref(null)
+const isFetchingImages = ref(true)
 
 const popularTvShows = computed(() => {
   const tvShowsWithRating = _.filter(tvShows.value, (tvShow) => tvShow.rating.average !== null)
@@ -41,13 +66,41 @@ async function fetchTvShows () {
   tvShows.value = _.concat(tvShows, tvShowsPage2)
 }
 
+function fetchFeaturedImage (tvShow) {
+  if (!isFetchingImages.value) {
+    return featuredTvShowsImages.value[_.findIndex(featuredTvShowsImages.value,
+      imgData => imgData.id === tvShow.id)].images[0].resolutions.original.url
+  }
+}
+
+function fetchImages () {
+  let imagesArray = []
+
+  _.take(popularTvShows.value, 20).forEach(popularTvShow => {
+    fetch(`https://api.tvmaze.com/shows/${popularTvShow.id}/images`)
+      .then(response => response.json())
+      .then(json => _.reject(json, image => image.type !== 'background'))
+      .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
+      .then(result => {
+        imagesArray.push({
+          id: popularTvShow.id,
+          images: result,
+        })
+      }).finally(() => {
+      featuredTvShowsImages.value = imagesArray
+      isFetchingImages.value = false
+    })
+  })
+}
+
 onMounted(() => {
   if (loadMockData.value) {
     fetchMockData((mockShows) => {
       tvShows.value = mockShows
-      isFetchingShows.value = false
+      featuredTvShow.value = popularTvShows.value[0]
 
-      console.log(popularTvShows.value)
+      fetchImages()
+      isFetchingShows.value = false
     })
 
     return
@@ -56,3 +109,5 @@ onMounted(() => {
   fetchTvShows()
 })
 </script>
+
+
