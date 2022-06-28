@@ -1,30 +1,58 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <div v-if="!isFetchingShows">
+      Content
+    </div>
+    <p v-else>
+      Loading...
+    </p>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts" setup>
+import { computed, onMounted, ref } from 'vue'
+import _ from 'lodash'
+import tvShowsMockData from '../mocks/tvshows.json'
+
+const tvShows = ref(null)
+const loadMockData = ref(true)
+const isFetchingShows = ref(true)
+
+const popularTvShows = computed(() => {
+  const tvShowsWithRating = _.filter(tvShows.value, (tvShow) => tvShow.rating.average !== null)
+  return _.orderBy(tvShowsWithRating, (tvShow) => tvShow.rating.average, 'desc')
+})
+
+const popularTvShowsByGenre = computed(() => {
+  return _.groupBy(popularTvShows.value, tvShow => tvShow.genres[0])
+})
+
+function fetchMockData (callback) {
+  return callback(tvShowsMockData)
 }
 
-nav {
-  padding: 30px;
+async function fetchTvShows () {
+  const response = await fetch('https://api.tvmaze.com/shows')
+  const tvShows = await response.json()
+
+  const responsePage2 = await fetch('https://api.tvmaze.com/shows?page=1')
+  const tvShowsPage2 = await responsePage2.json()
+
+  tvShows.value = _.concat(tvShows, tvShowsPage2)
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+onMounted(() => {
+  if (loadMockData.value) {
+    fetchMockData((mockShows) => {
+      tvShows.value = mockShows
+      isFetchingShows.value = false
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+      console.log(popularTvShows.value)
+    })
+
+    return
+  }
+
+  fetchTvShows()
+})
+</script>
