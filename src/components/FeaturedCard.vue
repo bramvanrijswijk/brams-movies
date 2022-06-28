@@ -1,12 +1,15 @@
 <template>
-  <div
-    style="min-width: 200px;"
-  >
+  <div style="width: 200px; max-width: 200px;">
     <img
+      :alt="`Poster of ${tvShow.name}`"
       :src="tvShow.image.medium"
-      alt=""
     >
-    <p>{{ tvShow.name }}</p>
+    <p
+      :class="{'font-bold': isHovered}"
+      class="pt-2 pl-2 break-all"
+    >
+      {{ tvShow.name }}
+    </p>
   </div>
 </template>
 
@@ -21,5 +24,8 @@ const props = defineProps({
       return {}
     }
   },
+  isHovered: {
+    type: Boolean
+  }
 })
 </script>

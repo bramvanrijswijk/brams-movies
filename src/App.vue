@@ -5,20 +5,57 @@
         :image-url="fetchFeaturedImage(featuredTvShow)"
         :tv-show="featuredTvShow"
       />
-      <main class="mx-10 pt-10">
-        <vue-horizontal
-          class="vue-horizontal"
-          snap="start"
-        >
-          <featured-card
-            v-for="popularTvShow in _.take(popularTvShows, 20)"
-            :key="popularTvShow.id"
-            :class="{ '-mt-2': featuredTvShow.id === popularTvShow.id}"
-            :tv-show="popularTvShow"
-            class="transition-all cursor-pointer"
-            @mouseover="featuredTvShow = popularTvShow"
-          />
-        </vue-horizontal>
+      <main
+        class="flex flex-col space-y-12 mx-10 pt-10"
+        style="height: 1200px;"
+      >
+        <section aria-label="now-popular">
+          <genre-heading>Now popular</genre-heading>
+          <vue-horizontal
+            class="vue-horizontal"
+            snap="start"
+          >
+            <featured-card
+              v-for="popularTvShow in _.take(popularTvShows, 20)"
+              :key="popularTvShow.id"
+              :class="{ 'brightness-125': featuredTvShow.id === popularTvShow.id}"
+              :is-hovered="featuredTvShow.id === popularTvShow.id"
+              :tv-show="popularTvShow"
+              class="transition-all cursor-pointer"
+              @mouseover="featuredTvShow = popularTvShow"
+            />
+          </vue-horizontal>
+        </section>
+
+        <section aria-label="action">
+          <genre-heading>Action</genre-heading>
+          <vue-horizontal
+            class="vue-horizontal"
+            snap="start"
+          >
+            <featured-card
+              v-for="popularTvShow in _.take(popularTvShowsByGenre.Action, 20)"
+              :key="popularTvShow.id"
+              :tv-show="popularTvShow"
+              class="transition-all cursor-pointer hover:brightness-125"
+            />
+          </vue-horizontal>
+        </section>
+
+        <section aria-label="comedy">
+          <genre-heading>Comedy</genre-heading>
+          <vue-horizontal
+            class="vue-horizontal"
+            snap="start"
+          >
+            <featured-card
+              v-for="popularTvShow in _.take(popularTvShowsByGenre.Comedy, 20)"
+              :key="popularTvShow.id"
+              :tv-show="popularTvShow"
+              class="transition-all cursor-pointer hover:brightness-125"
+            />
+          </vue-horizontal>
+        </section>
       </main>
     </div>
     <p v-else>
@@ -35,6 +72,7 @@ import VueHorizontal from 'vue-horizontal'
 import tvShowsMockData from '../mocks/tvshows.json'
 import HeroSection from '@/components/HeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
+import GenreHeading from '@/components/GenreHeading'
 
 const tvShows = ref(null)
 const loadMockData = ref(true)

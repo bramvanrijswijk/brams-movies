@@ -7,9 +7,20 @@
     <link href="<%= BASE_URL %>favicon.ico" rel="icon">
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
     <style type="text/tailwindcss">
         .vue-horizontal > .v-hl-container {
-            @apply space-x-4;
+            @apply space-x-6;
+        }
+
+        @layer base {
+            html {
+                font-family: 'Poppins', system-ui, sans-serif;
+            }
         }
     </style>
 
