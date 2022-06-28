@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-hidden relative">
     <header
-      :style="`background-image: url(${imageUrl}); min-height: 800px; max-height: 800px;`"
+      :style="`background-image: url(${imageUrl}); min-height: 500px; max-height: 500px;`"
       class="w-full bg-center bg-cover brightness-50 transition-all"
     />
     <div class="absolute top-1/2 -translate-y-1/2 left-52 text-white text-3xl w-1/2">
@@ -11,17 +11,6 @@
       <p class="text-base font-light pt-2 leading-8">
         {{ formattedGenres }}
       </p>
-      <p
-        class="text-xl font-light pt-5 leading-8"
-        v-html="shortSummary"
-      />
-
-      <router-link
-        :to="`/show/${tvShow.id}`"
-        class="text-base font-bold lowercase tracking-wider bg-red-900 px-5 py-3 mt-5 inline-block hover:brightness-125 transition-all"
-      >
-        More information
-      </router-link>
     </div>
   </div>
 </template>
