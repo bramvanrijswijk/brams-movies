@@ -17,19 +17,22 @@
             v-for="result in results"
             :key="result.show.id"
             :tv-show="result.show"
-            class="transition-all cursor-pointer"
+            class="transition-all cursor-pointer hover:brightness-125"
           />
         </vue-horizontal>
       </section>
 
       <section
         aria-label="search-results"
-        class="flex flex-col justify-center items-center"
+        class="flex flex-col justify-center items-center pt-12"
       >
-        <p>Didn't find what you were looking for?</p>
+        <p class="text-gray-500 font-medium">
+          Didn't find what you were looking for?
+        </p>
         <input
           v-model="searchTerm"
-          class="border mt-2"
+          class="border border-gray-300 mt-2 w-4/12 px-3 py-2 rounded focus:ring-2 focus:outline-none"
+          placeholder="Breaking Bad"
           type="text"
           @keyup.enter="search()"
         >

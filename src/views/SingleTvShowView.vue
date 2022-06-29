@@ -22,21 +22,18 @@
         </section>
         <section aria-label="cast">
           <genre-heading>Cast</genre-heading>
-          <div class="grid grid-cols-6 gap-6">
+          <p v-if="castMembers.length < 1">
+            No cast was found.
+          </p>
+          <div
+            v-else
+            class="grid grid-cols-6 gap-6"
+          >
             <div
               v-for="cast in castMembers"
               :key="cast.id"
             >
-              <div class="flex flex-col items-center text-center">
-                <img
-                  :src="cast.person.image.medium"
-                  alt=""
-                  class="object-cover h-24 w-24 rounded-full"
-                >
-                <p class="text-xs text-gray-700 pt-2">
-                  {{ cast.person.name }}
-                </p>
-              </div>
+              <cast-member :person="cast.person" />
             </div>
           </div>
         </section>
@@ -53,6 +50,7 @@ import _ from 'lodash'
 
 import SingleShowHeroSection from '@/components/SingleShowHeroSection'
 import GenreHeading from '@/components/GenreHeading'
+import CastMember from '@/components/CastMember'
 
 const route = useRoute()
 const showData = ref({})

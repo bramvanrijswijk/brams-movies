@@ -5,7 +5,7 @@
     <div style="width: 200px; max-width: 200px;">
       <img
         :alt="`Poster of ${tvShow.name}`"
-        :src="tvShow.image?.medium"
+        :src="tvShow.image?.medium ?? 'https://via.placeholder.com/210x295'"
       >
       <p
         :class="{'font-bold': isHovered}"

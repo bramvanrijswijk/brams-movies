@@ -5,7 +5,7 @@
         v-if="isSearchActive"
         ref="searchInput"
         v-model="searchTerm"
-        class="px-3 py-2 -mt-2 rounded bg-gray-400 focus:outline-none text-white"
+        class="pl-3 pr-12 py-2 -mt-2 rounded bg-gray-400 focus:outline-none text-white"
         placeholder="Breaking Bad"
         type="text"
         @blur="isSearchActive = false"
