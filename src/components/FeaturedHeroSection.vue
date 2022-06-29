@@ -25,7 +25,7 @@
 
       <router-link
         :to="`/show/${tvShow.id}`"
-        class="text-base font-bold lowercase tracking-wider bg-red-900 px-5 py-3 mt-5 inline-block hover:brightness-125 transition-all"
+        class="text-base font-bold lowercase tracking-wider bg-red-800 px-5 py-3 mt-5 inline-block hover:brightness-125 transition-all"
       >
         More information
       </router-link>

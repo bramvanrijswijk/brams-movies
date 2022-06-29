@@ -40,6 +40,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useHead } from '@vueuse/head'
 import { useRoute, useRouter } from 'vue-router'
 import VueHorizontal from 'vue-horizontal'
 
@@ -47,6 +48,10 @@ import SimpleHeroSection from '@/components/SimpleHeroSection'
 import SubTitle from '@/components/SubTitle'
 import FeaturedCard from '@/components/FeaturedCard'
 import { API_URL } from '@/constants'
+
+useHead({
+  title: 'Brams Movies - Search results',
+})
 
 const route = useRoute()
 const router = useRouter()

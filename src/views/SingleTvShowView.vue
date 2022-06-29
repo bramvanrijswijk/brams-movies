@@ -42,6 +42,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import _ from 'lodash'
 
@@ -49,6 +50,10 @@ import SubTitle from '@/components/SubTitle'
 import CastMember from '@/components/CastMember'
 import SimpleHeroSection from '@/components/SimpleHeroSection'
 import { API_URL } from '@/constants'
+
+useHead({
+  title: 'Brams Movies - Show page',
+})
 
 const route = useRoute()
 const showData = ref({})
@@ -61,7 +66,7 @@ const featuredImage = computed(() => {
 })
 
 const castMembers = computed(() => {
-  return showData.value._embedded.cast
+  return showData.value._embedded?.cast ?? []
 })
 
 const formattedGenres = computed(() => {

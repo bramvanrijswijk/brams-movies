@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!isFetchingShows">
+    <div v-if="!isFetchingShows || !isFetchingImages">
       <featured-hero-section
         :image-url="fetchFeaturedImage(featuredTvShow)"
         :tv-show="featuredTvShow"
@@ -98,10 +98,10 @@ async function fetchTvShows (callback) {
   const response = await fetch(`${API_URL}/shows`)
   const tvShows = await response.json()
 
-  const responsePage2 = await fetch(`${API_URL}/shows?page=1`)
-  const tvShowsPage2 = await responsePage2.json()
+  const responseMoreShows = await fetch(`${API_URL}/shows?page=1`)
+  const moreShows = await responseMoreShows.json()
 
-  return callback(_.concat(tvShows, tvShowsPage2))
+  return callback(_.concat(tvShows, moreShows))
 }
 
 function fetchFeaturedImage (tvShow) {
