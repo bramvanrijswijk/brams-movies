@@ -30,31 +30,14 @@
         More information
       </router-link>
     </div>
-    <div class="flex items-center justify-center absolute top-5 right-10">
-      <div class="relative py-2">
-        <input
-          v-if="isSearchActive"
-          v-model="searchTerm"
-          class="px-3 py-2 -mt-2 rounded bg-gray-400 focus:outline-none text-white"
-          placeholder="Breaking Bad"
-          type="text"
-          @blur="isSearchActive = false"
-          @keyup.enter="search()"
-        >
-        <i
-          class="absolute right-3 fa-solid fa-magnifying-glass text-white cursor-pointer"
-          style="font-size: 20px;"
-          @click="isSearchActive = !isSearchActive"
-        />
-      </div>
-    </div>
+    <hero-search />
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, defineProps } from 'vue'
 import _ from 'lodash'
+import HeroSearch from '@/components/HeroSearch'
 
 const props = defineProps({
   tvShow: {
@@ -72,19 +55,6 @@ const props = defineProps({
     },
   },
 })
-
-const router = useRouter()
-const isSearchActive = ref(false)
-const searchTerm = ref('')
-
-function search () {
-  router.push({
-    path: '/search',
-    query: {
-      search: searchTerm.value,
-    },
-  })
-}
 
 const shortSummary = computed(() => {
   return _.truncate(props.tvShow.summary, {
