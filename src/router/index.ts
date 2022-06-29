@@ -11,6 +11,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/show/:id',
     name: 'single-show',
     component: () => import(/* webpackChunkName: "single-show" */ '../views/SingleTvShowView.vue')
+  },
+  {
+    path: '/search',
+    name: 'search-results',
+    component: () => import(/* webpackChunkName: "single-show" */ '../views/SearchResultsView.vue')
   }
 ]
 

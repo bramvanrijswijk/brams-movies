@@ -9,27 +9,33 @@
     />
 
     <main class="flex flex-col space-y-12 mx-10 pt-10">
-      <section class="w-6/12">
+      <section class="flex flex-col mx-auto w-6/12 space-y-8">
         <section aria-label="overview">
           <genre-heading>Overview</genre-heading>
-          <p v-html="showData.summary" />
+          <p
+            class="leading-7"
+            v-html="showData.summary"
+          />
+          <p class="pt-5 text-gray-700 text-sm">
+            {{ formattedGenres }}
+          </p>
         </section>
         <section aria-label="cast">
           <genre-heading>Cast</genre-heading>
-          <div class="flex flex-wrap space-x-4">
+          <div class="grid grid-cols-6 gap-6">
             <div
               v-for="cast in castMembers"
               :key="cast.id"
             >
-              <div
-                class="grow"
-                style="width: 100px;"
-              >
+              <div class="flex flex-col items-center text-center">
                 <img
                   :src="cast.person.image.medium"
                   alt=""
+                  class="object-cover h-24 w-24 rounded-full"
                 >
-                <p>{{ cast.person.name }}</p>
+                <p class="text-xs text-gray-700 pt-2">
+                  {{ cast.person.name }}
+                </p>
               </div>
             </div>
           </div>
@@ -55,11 +61,15 @@ const isFetchingImages = ref(true)
 const showImages = ref([])
 
 const featuredImage = computed(() => {
-  return showImages.value[0][0].resolutions.original.url
+  return showImages.value[0][0]?.resolutions.original.url
 })
 
 const castMembers = computed(() => {
   return showData.value._embedded.cast
+})
+
+const formattedGenres = computed(() => {
+  return _.join(showData.value.genres, ' | ')
 })
 
 async function fetchShowData () {
@@ -78,10 +88,11 @@ function fetchImages () {
     .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
     .then(result => {
       imagesArray.push(result)
-    }).finally(() => {
-    showImages.value = imagesArray
-    isFetchingImages.value = false
-  })
+    })
+    .finally(() => {
+      showImages.value = imagesArray
+      isFetchingImages.value = false
+    })
 }
 
 onMounted(() => {

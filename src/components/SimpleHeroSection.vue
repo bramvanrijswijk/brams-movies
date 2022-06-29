@@ -6,21 +6,19 @@
     />
     <div class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-white text-3xl text-center">
       <p class="text-7xl font-bold">
-        {{ tvShow.name }}
+        {{ title }}
       </p>
     </div>
     <div class="absolute top-5 left-10">
-      <div class="absolute top-5 left-10">
-        <a
-          href="#"
-          @click="router.go(-1)"
-        >
-          <i
-            class="fa-solid fa-arrow-left-long text-white"
-            style="font-size: 25px;"
-          />
-        </a>
-      </div>
+      <a
+        href="#"
+        @click="router.go(-1)"
+      >
+        <i
+          class="fa-solid fa-arrow-left-long text-white"
+          style="font-size: 25px;"
+        />
+      </a>
     </div>
   </div>
 </template>
@@ -30,9 +28,11 @@ import { computed, defineProps } from 'vue'
 import _ from 'lodash'
 import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
 const props = defineProps({
-  tvShow: {
-    type: Object,
+  title: {
+    type: String,
     required: true,
     default () {
       return {}
@@ -45,13 +45,5 @@ const props = defineProps({
       return 'https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1729&q=80'
     },
   },
-})
-
-const router = useRouter()
-
-const shortSummary = computed(() => {
-  return _.truncate(props.tvShow.summary, {
-    length: 200,
-  })
 })
 </script>

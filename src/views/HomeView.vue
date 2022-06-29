@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!isFetchingShows">
-      <hero-section
+      <featured-hero-section
         :image-url="fetchFeaturedImage(featuredTvShow)"
         :tv-show="featuredTvShow"
       />
@@ -67,7 +67,7 @@ import _ from 'lodash'
 import VueHorizontal from 'vue-horizontal'
 
 import tvShowsMockData from '@/mocks/tvshows.json'
-import HeroSection from '@/components/HeroSection.vue'
+import FeaturedHeroSection from '@/components/FeaturedHeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
 import GenreHeading from '@/components/GenreHeading'
 
