@@ -1,14 +1,11 @@
 <template>
-  <div v-if="isFetchingShowData">
-    Loading...
-  </div>
-  <div v-else>
+  <div v-if="!isFetchingShowData">
     <simple-hero-section
       :title="`Search results for: &quot;${route.query.search}&quot;`"
     />
     <main class="flex flex-col space-y-12 mx-10 pt-10">
       <section aria-label="search-results">
-        <genre-heading>Search results for "{{ route.query.search }}"</genre-heading>
+        <sub-title>Search results for "{{ route.query.search }}"</sub-title>
         <vue-horizontal
           class="vue-horizontal"
           snap="start"
@@ -31,7 +28,7 @@
         </p>
         <input
           v-model="searchTerm"
-          class="border border-gray-300 mt-2 w-4/12 px-3 py-2 rounded focus:ring-2 focus:outline-none"
+          class="border border-gray-300 mt-2 w-full md:w-4/12 px-3 py-2 rounded focus:ring-2 focus:outline-none"
           placeholder="Breaking Bad"
           type="text"
           @keyup.enter="search()"
@@ -42,14 +39,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import _ from 'lodash'
 import VueHorizontal from 'vue-horizontal'
 
 import SimpleHeroSection from '@/components/SimpleHeroSection'
-import GenreHeading from '@/components/GenreHeading'
+import SubTitle from '@/components/SubTitle'
 import FeaturedCard from '@/components/FeaturedCard'
+import { API_URL } from '@/constants'
 
 const route = useRoute()
 const router = useRouter()
@@ -70,7 +67,7 @@ function search () {
 }
 
 async function fetchShowsBasedOnSearch () {
-  const response = await fetch(`https://api.tvmaze.com/search/shows?q=${searchTerm.value}`)
+  const response = await fetch(`${API_URL}/search/shows?q=${searchTerm.value}`)
   results.value = await response.json()
 
   isFetchingShowData.value = false

@@ -7,7 +7,7 @@
       />
       <main class="flex flex-col space-y-12 mx-10 pt-10">
         <section aria-label="now-popular">
-          <genre-heading>Now popular</genre-heading>
+          <sub-title>Now popular</sub-title>
           <vue-horizontal
             class="vue-horizontal"
             snap="start"
@@ -25,7 +25,7 @@
         </section>
 
         <section aria-label="action">
-          <genre-heading>Action</genre-heading>
+          <sub-title>Action</sub-title>
           <vue-horizontal
             class="vue-horizontal"
             snap="start"
@@ -40,7 +40,7 @@
         </section>
 
         <section aria-label="comedy">
-          <genre-heading>Comedy</genre-heading>
+          <sub-title>Comedy</sub-title>
           <vue-horizontal
             class="vue-horizontal"
             snap="start"
@@ -55,27 +55,30 @@
         </section>
       </main>
     </div>
-    <p v-else>
-      Loading...
-    </p>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { useHead } from '@vueuse/head'
 import _ from 'lodash'
 import VueHorizontal from 'vue-horizontal'
 
 import tvShowsMockData from '@/mocks/tvshows.json'
 import FeaturedHeroSection from '@/components/FeaturedHeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
-import GenreHeading from '@/components/GenreHeading'
+import SubTitle from '@/components/SubTitle'
+import { API_URL } from '@/constants'
+
+useHead({
+  title: 'Brams Movies - Homepage',
+})
 
 const tvShows = ref(null)
 const loadMockData = ref(true)
 const isFetchingShows = ref(true)
 const featuredTvShow = ref(null)
-const featuredTvShowsImages = ref(null)
+const featuredTvShowsImages = ref([])
 const isFetchingImages = ref(true)
 
 const popularTvShows = computed(() => {
@@ -91,14 +94,14 @@ function fetchMockData (callback) {
   return callback(tvShowsMockData)
 }
 
-async function fetchTvShows () {
-  const response = await fetch('https://api.tvmaze.com/shows')
+async function fetchTvShows (callback) {
+  const response = await fetch(`${API_URL}/shows`)
   const tvShows = await response.json()
 
-  const responsePage2 = await fetch('https://api.tvmaze.com/shows?page=1')
+  const responsePage2 = await fetch(`${API_URL}/shows?page=1`)
   const tvShowsPage2 = await responsePage2.json()
 
-  tvShows.value = _.concat(tvShows, tvShowsPage2)
+  return callback(_.concat(tvShows, tvShowsPage2))
 }
 
 function fetchFeaturedImage (tvShow) {
@@ -109,20 +112,20 @@ function fetchFeaturedImage (tvShow) {
 }
 
 function fetchImages () {
-  let imagesArray = []
+  let images = []
 
   _.take(popularTvShows.value, 20).forEach(popularTvShow => {
-    fetch(`https://api.tvmaze.com/shows/${popularTvShow.id}/images`)
+    fetch(`${API_URL}/shows/${popularTvShow.id}/images`)
       .then(response => response.json())
       .then(json => _.reject(json, image => image.type !== 'background'))
       .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
       .then(result => {
-        imagesArray.push({
+        images.push({
           id: popularTvShow.id,
           images: result,
         })
       }).finally(() => {
-      featuredTvShowsImages.value = imagesArray
+      featuredTvShowsImages.value = images
       isFetchingImages.value = false
     })
   })
@@ -141,7 +144,13 @@ onMounted(() => {
     return
   }
 
-  fetchTvShows()
+  fetchTvShows((result) => {
+    tvShows.value = result
+    featuredTvShow.value = popularTvShows.value[0]
+
+    fetchImages()
+    isFetchingShows.value = false
+  })
 })
 </script>
 
