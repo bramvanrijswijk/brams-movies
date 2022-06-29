@@ -4,11 +4,11 @@
       :style="`background-image: url(${imageUrl}); min-height: 800px; max-height: 800px;`"
       class="w-full bg-center bg-cover brightness-50 transition-all"
     />
-    <div class="absolute top-1/2 -translate-y-1/2 left-52 text-white text-3xl w-1/2">
-      <p class="text-7xl font-bold">
+    <div class="absolute top-1/2 -translate-y-1/2 left-10 lg:left-52 text-white text-3xl w-9/12 lg:w-1/2">
+      <p class="text-5xl xl:text-7xl font-bold">
         {{ tvShow.name }}
       </p>
-      <p class="flex space-x-6 text-base font-light pt-2 leading-8">
+      <p class="flex flex-col md:flex-row space-x-0 md:space-x-6 text-base font-light pt-2 leading-8">
         <span>{{ formattedGenres }}</span>
         <span>
           <i
@@ -19,7 +19,7 @@
         </span>
       </p>
       <p
-        class="text-xl font-light pt-5 leading-8"
+        class="text-base md:text-lg xl:text-xl font-light pt-5 leading-6 xl:leading-8"
         v-html="shortSummary"
       />
 
