@@ -4,29 +4,22 @@
       :style="`background-image: url(${imageUrl}); min-height: 500px; max-height: 500px;`"
       class="w-full bg-center bg-cover brightness-50 transition-all"
     />
-    <div class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-white text-3xl text-center">
-      <p class="text-7xl font-bold">
+    <div
+      class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-9/12 lg:w-1/2 text-white text-3xl text-center"
+    >
+      <p class="text-5xl xl:text-7xl font-bold">
         {{ title }}
       </p>
     </div>
-    <div class="absolute top-5 left-10">
-      <a
-        href="#"
-        @click="router.go(-1)"
-      >
-        <i
-          class="fa-solid fa-arrow-left-long text-white"
-          style="font-size: 25px;"
-        />
-      </a>
-    </div>
+
+    <go-back-arrow />
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue'
-import _ from 'lodash'
+import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import GoBackArrow from '@/components/GoBackArrow'
 
 const router = useRouter()
 
