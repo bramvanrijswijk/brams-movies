@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { useHead } from '@vueuse/head'
 import _ from 'lodash'
@@ -66,17 +66,18 @@ import VueHorizontal from 'vue-horizontal'
 
 import FeaturedHeroSection from '@/components/FeaturedHeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
-import SubTitle from '@/components/SubTitle'
+import SubTitle from '@/components/SubTitle.vue'
 import { API_URL } from '@/constants'
+import { TvShow, Image, ImagesByShow } from '@/interfaces'
 
 useHead({
   title: 'Brams Movies - Homepage',
 })
 
-const tvShows = ref(null)
+const tvShows = ref<TvShow[]>([])
 const isFetchingShows = ref(true)
-const featuredTvShow = ref(null)
-const featuredTvShowsImages = ref([])
+const featuredTvShow = ref<TvShow>()
+const featuredTvShowsImages = ref<ImagesByShow>()
 const isFetchingImages = ref(true)
 
 const popularTvShows = computed(() => {
@@ -98,15 +99,15 @@ async function fetchTvShows (callback) {
   return callback(_.concat(tvShows, moreShows))
 }
 
-function fetchFeaturedImage (tvShow) {
+function fetchFeaturedImage (tvShow: TvShow) {
   if (!isFetchingImages.value) {
-    return featuredTvShowsImages.value[_.findIndex(featuredTvShowsImages.value,
-      imgData => imgData.id === tvShow.id)].images[0].resolutions.original.url
+    const index: number = _.findIndex(featuredTvShowsImages.value, (imgData: ImagesByShow) => imgData.tvShowId === tvShow.id)
+    return featuredTvShowsImages.value[index].images[0].resolutions.original.url
   }
 }
 
 function fetchImages () {
-  let images = []
+  let imagesByShow: ImagesByShow[] = []
 
   _.take(popularTvShows.value, 20).forEach(popularTvShow => {
     fetch(`${API_URL}/shows/${popularTvShow.id}/images`)
@@ -118,19 +119,19 @@ function fetchImages () {
       // sort them by width so the one with the highest resolution can be chosen
       .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
       .then(result => {
-        images.push({
-          id: popularTvShow.id,
+        imagesByShow.push({
+          tvShowId: popularTvShow.id,
           images: result,
         })
       }).finally(() => {
-      featuredTvShowsImages.value = images
+      featuredTvShowsImages.value = imagesByShow
       isFetchingImages.value = false
     })
   })
 }
 
 onMounted(() => {
-  fetchTvShows((result) => {
+  fetchTvShows((result: TvShow[]) => {
     tvShows.value = result
     featuredTvShow.value = popularTvShows.value[0]
 
