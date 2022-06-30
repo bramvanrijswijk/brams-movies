@@ -12,7 +12,7 @@
         <span>{{ formattedGenres }}</span>
         <span>
           <i
-            v-for="star in amountOfStars"
+            v-for="star in calculateNumberOfStars(tvShow.rating.average)"
             :key="star"
             class="fa-solid fa-star"
           />
@@ -34,14 +34,17 @@
   </div>
 </template>
 
-<script setup>
-import { computed, defineProps } from 'vue'
+<script lang="ts" setup>
+import { computed, defineProps, PropType } from 'vue'
 import _ from 'lodash'
-import HeroSearch from '@/components/HeroSearch'
+import calculateNumberOfStars from '@/utilities/calculateNumberOfStars'
+import { TvShow } from '@/interfaces'
+
+import HeroSearch from '@/components/HeroSearch.vue'
 
 const props = defineProps({
   tvShow: {
-    type: Object,
+    type: Object as PropType<TvShow>,
     required: true,
     default () {
       return {}
@@ -64,9 +67,5 @@ const shortSummary = computed(() => {
 
 const formattedGenres = computed(() => {
   return _.join(props.tvShow.genres, ' | ')
-})
-
-const amountOfStars = computed(() => {
-  return _.round(props.tvShow.rating.average / 2, 0)
 })
 </script>

@@ -48,7 +48,6 @@ its images in a separate call, like explained in HomeView.
 
 ### Todo
 
-- Add Typescript in all components
 - Extract "Now popular" section to separate component
 - Extract tv shows per genre section to separate component
 - Extract `fetchImages` to usable
