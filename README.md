@@ -1,5 +1,7 @@
 # Bram's Movies app
 
+![Schermafbeelding 2022-06-30 om 10 47 59](https://user-images.githubusercontent.com/26224522/176634713-b1c18cee-4d8a-4039-bf23-9d6112b73934.png)
+
 ## Frameworks & tools
 
 - Vue 3 (Composition API)
