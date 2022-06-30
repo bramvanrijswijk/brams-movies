@@ -75,7 +75,6 @@ useHead({
 })
 
 const tvShows = ref(null)
-const loadMockData = ref(true)
 const isFetchingShows = ref(true)
 const featuredTvShow = ref(null)
 const featuredTvShowsImages = ref([])
@@ -132,18 +131,6 @@ function fetchImages () {
 }
 
 onMounted(() => {
-  if (loadMockData.value) {
-    fetchMockData((mockShows) => {
-      tvShows.value = mockShows
-      featuredTvShow.value = popularTvShows.value[0]
-
-      fetchImages()
-      isFetchingShows.value = false
-    })
-
-    return
-  }
-
   fetchTvShows((result) => {
     tvShows.value = result
     featuredTvShow.value = popularTvShows.value[0]
