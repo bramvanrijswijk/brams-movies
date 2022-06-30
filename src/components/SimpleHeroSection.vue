@@ -18,12 +18,9 @@
 
 <script setup>
 import { defineProps } from 'vue'
-import { useRouter } from 'vue-router'
 import GoBackArrow from '@/components/GoBackArrow'
 
-const router = useRouter()
-
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
