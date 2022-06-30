@@ -64,7 +64,6 @@ import { useHead } from '@vueuse/head'
 import _ from 'lodash'
 import VueHorizontal from 'vue-horizontal'
 
-import tvShowsMockData from '@/mocks/tvshows.json'
 import FeaturedHeroSection from '@/components/FeaturedHeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
 import SubTitle from '@/components/SubTitle'
@@ -89,10 +88,6 @@ const popularTvShowsByGenre = computed(() => {
   return _.groupBy(popularTvShows.value, tvShow => tvShow.genres[0])
 })
 
-function fetchMockData (callback) {
-  return callback(tvShowsMockData)
-}
-
 async function fetchTvShows (callback) {
   const response = await fetch(`${API_URL}/shows`)
   const tvShows = await response.json()
@@ -116,7 +111,11 @@ function fetchImages () {
   _.take(popularTvShows.value, 20).forEach(popularTvShow => {
     fetch(`${API_URL}/shows/${popularTvShow.id}/images`)
       .then(response => response.json())
+
+      // only fetch background images
       .then(json => _.reject(json, image => image.type !== 'background'))
+
+      // sort them by width so the one with the highest resolution can be chosen
       .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
       .then(result => {
         images.push({

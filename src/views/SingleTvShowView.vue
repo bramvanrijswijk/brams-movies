@@ -85,7 +85,11 @@ function fetchImages () {
 
   fetch(`${API_URL}/shows/${route.params.id}/images`)
     .then(response => response.json())
+
+    // only fetch background images
     .then(json => _.reject(json, image => image.type !== 'background'))
+
+    // sort them by width so the one with the highest resolution can be chosen
     .then(backgroundImages => _.orderBy(backgroundImages, image => image.resolutions.original.width, 'desc'))
     .then(result => {
       imagesArray.push(result)
