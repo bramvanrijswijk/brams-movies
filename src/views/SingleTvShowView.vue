@@ -9,10 +9,8 @@
       <section class="flex flex-col mx-auto w-full md:w-6/12 space-y-8">
         <section aria-label="overview">
           <sub-title>Overview</sub-title>
-          <p
-            class="leading-7"
-            v-html="showData.summary"
-          />
+          <!-- eslint-disable-next-line -->
+          <p class="leading-7" v-html="showData.summary"/>
           <p class="pt-5 text-gray-700 text-sm">
             {{ formattedGenres }}
           </p>

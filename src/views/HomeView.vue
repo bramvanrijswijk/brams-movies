@@ -68,7 +68,7 @@ import FeaturedHeroSection from '@/components/FeaturedHeroSection.vue'
 import FeaturedCard from '@/components/FeaturedCard.vue'
 import SubTitle from '@/components/SubTitle.vue'
 import { API_URL } from '@/constants'
-import { TvShow, Image, ImagesByShow } from '@/interfaces'
+import { TvShow, ImagesByShow } from '@/interfaces'
 
 useHead({
   title: 'Brams Movies - Homepage',

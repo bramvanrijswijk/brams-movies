@@ -18,10 +18,8 @@
           />
         </span>
       </p>
-      <p
-        class="text-base md:text-lg xl:text-xl font-light pt-5 leading-6 xl:leading-8"
-        v-html="shortSummary"
-      />
+      <!-- eslint-disable-next-line -->
+      <p class="text-base md:text-lg xl:text-xl font-light pt-5 leading-6 xl:leading-8" v-html="shortSummary"/>
 
       <router-link
         :to="`/show/${tvShow.id}`"

@@ -14,7 +14,7 @@
 <script setup>
 import { defineProps } from 'vue'
 
-const props = defineProps({
+defineProps({
   person: {
     type: Object,
     required: true,
